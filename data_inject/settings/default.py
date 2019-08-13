@@ -16,11 +16,11 @@ from logging.config import dictConfig
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOG_FILE_PATH = os.path.join(BASE_DIR, 'logs/data_inject.log')
-INPUT_DIR = '/home/seqato-lijo/workspace/cattle_iot_model/data_inject/input_data/'
-PROCESSED_FILES_FOLDER = '/home/seqato-lijo/workspace/cattle_iot_model/data_inject/processed_data/'
-DUMP_DIR = '/home/seqato-lijo/workspace/cattle_iot_model/data_inject/csv_dump/'
-DYNAMO_DB = 'TestTable'
-ROW_COUNT = 99
+INPUT_DIR = '/home/pi/datalogger/input_data/'
+PROCESSED_FILES_FOLDER = '/media/pi/USBDRIVE/'
+DUMP_DIR = '/home/pi/datalogger/csv_dump/'
+DYNAMO_DB = 'TestProd'
+ROW_COUNT = 14999
 # Log size in MB
 LOG_SIZE = 5
 # Log file back up count
@@ -55,3 +55,4 @@ config_dict = {
      'version': 1
 }
 logging.config.dictConfig(config_dict)
+

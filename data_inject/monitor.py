@@ -12,8 +12,8 @@
 
 import time
 
-from data_inject import readcsv
-from data_inject.settings.default import *
+import readcsv
+from settings.default import *
 
 path_to_watch = INPUT_DIR
 

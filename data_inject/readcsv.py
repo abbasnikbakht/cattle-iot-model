@@ -10,12 +10,10 @@
     :license: LICENSE_NAME, see LICENSE_FILE for more details.
 """
 
-
-
 import csv
 import shutil
 import boto3
-from data_inject.settings.default import *
+from settings.default import *
 
 
 def convert_csv_to_json_list(file):
@@ -27,9 +25,13 @@ def convert_csv_to_json_list(file):
             data = {}
 
             data['Index'] = row['Index']
-            data['Date'] = row[' Date']
-            data['Time'] = row[' Time']
-            data['Data'] = row[' Data ']
+            data['Date'] = row['Date']
+            data['Time'] = row['Time']
+            data['Data'] = row['Data']
+            data['Timestamp'] = row['Timestamp']
+            data['x'] = row['x']
+            data['y'] = row['y']
+            data['z'] = row['z']
             items.append(data)
         return items
 
