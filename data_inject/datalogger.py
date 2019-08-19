@@ -67,10 +67,10 @@ def chk_usb_on_start():
     # if the "validate.txt" file is not found on startup, prompt the user to
     # install the appropriate usb drive
     if not (os.path.exists(AUTH_PATH)):
-        print("\n")
-        print("To start datalogging, insert a usb drive that is formatted as FAT, with the ")
-        print("label 'USBDRIVE', that has a text file named 'validate.txt' at the top level ")
-        print("of the usb drive.\n")
+        print "\n"
+        print "To start datalogging, insert a usb drive that is formatted as FAT, with the "
+        print "label 'USBDRIVE', that has a text file named 'validate.txt' at the top level "
+        print "of the usb drive.\n"
 
         while not (os.path.exists(AUTH_PATH)):
             sleep(1)
@@ -79,9 +79,9 @@ def chk_usb_on_start():
                     PathValid=True
                     validate_usb_write()
                     PathValid=False
-                    print("To finish path correction, remove and replace USBDRIVE.")
+                    print "To finish path correction, remove and replace USBDRIVE."
 
-    print("'USBDRIVE' with 'validate.txt' file found.")
+    print "'USBDRIVE' with 'validate.txt' file found."
 
 
 
@@ -105,7 +105,7 @@ def set_path_invalid():
 
     if not PathValid == False:
         PathValid = False
-        print("USB path is not valid, corrupted, missing, or ejected")
+        print "USB path is not valid, corrupted, missing, or ejected"
         dataIndex = 0
 
 
@@ -139,7 +139,7 @@ def validate_usb_write():
     # if the "validate.txt" file is not found, then we may have created a
     # 'fake' USB drive path accidentally...
     if not (os.path.exists(AUTH_PATH)):
-        print("path corruption suspected")
+        print "path corruption suspected"
         sleep(1)
 
         # The sleep above is to provide some manner of debouncing, in case
@@ -149,8 +149,8 @@ def validate_usb_write():
 
         # if the "validate.txt" file is not found a second time...
         if not (os.path.exists(AUTH_PATH)):
-            print("path corruption confirmed")
-            print("validate.txt file was not found")
+            print "path corruption confirmed"
+            print "validate.txt file was not found"
             set_path_invalid()
 
             # remove the drive path. the location that is being written to is
@@ -162,7 +162,7 @@ def validate_usb_write():
             # if the path no longer exists then rmtree worked, and the
             # incorrect path was deleted.
             if not (os.path.isdir(DRIVE_PATH)):
-                print("path corruption corrected")
+                print "path corruption corrected"
 
 
 
@@ -200,9 +200,9 @@ def start_new_file():
 
         # display to the user that a new file has been started
         print
-        print("#############################################################")
-        print("New File: " + FileName)
-        print("#############################################################")
+        print "#############################################################"
+        print "New File: " + FileName
+        print "#############################################################"
         print
 
         # write to the new file a header row to indicate what each of the
@@ -329,10 +329,10 @@ def main():
     ser.timeout = None
     ser.port = '/dev/serial0'
 
-    print(ser)
-    print(ser.name)
+    print ser
+    print ser.name
     ser.open()
-    print("Serial port is open: ", ser.isOpen())
+    print "Serial port is open: ", ser.isOpen()
 
     chk_usb_on_start()
 
@@ -344,7 +344,7 @@ def main():
 
     finally:
         ser.close
-        print("Serial port is open: ", ser.isOpen())
+        print "Serial port is open: ", ser.isOpen()
 
     return 0
 
