@@ -42,7 +42,8 @@ FilePath = ""
 dataIndex = 0
 
 FAIL_PATH = "/media/pi/USBDRIVE1/"
-DRIVE_PATH = "/media/pi/USBDRIVE/"
+#DRIVE_PATH = "/media/pi/USBDRIVE/"
+DRIVE_PATH = "/home/pi/datalogger/csv_dump/"
 AUTH_PATH = DRIVE_PATH + "validate.txt"
 
 MAX_ROWS_IN_FILE = 15000
@@ -267,9 +268,8 @@ def read_data():
 
     # format the full string: index, timestamp, and data
 
-    # fileString = str(format('%05d', dataIndex)) +"," + valueString
-    fileString = str(format('%05d', dataIndex)) + ", " + \
-                 str(mDate) + ", " + str(mTime) + ", " + valueString
+    fileString = str(format('%05d', dataIndex)) + ", " + str(mDate) + ", " + str(mTime) + ", " + valueString
+
    
 
     # if execution reaches this point, then it is assumed that a valid USB is
