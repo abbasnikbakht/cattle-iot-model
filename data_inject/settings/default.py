@@ -20,7 +20,9 @@ INPUT_DIR = '/home/pi/datalogger/input_data/'
 PROCESSED_FILES_FOLDER = '/home/pi/datalogger/processed_data'
 DUMP_DIR = '/home/pi/datalogger/csv_dump/'
 DYNAMO_DB = 'TestProd'
+DYNAMO_DB_DHT11 = 'CattleIOT_DHT11'
 ROW_COUNT = 14999
+DHT_ROW_COUNT = 2
 # Log size in MB
 LOG_SIZE = 5
 # Log file back up count

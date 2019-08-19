@@ -28,16 +28,24 @@ def move_processed_file(file):
 
 
 while 1:
-    logging.info("Watching the directory: %s for csv file having 15000 rows in it" % DUMP_DIR)
-    time.sleep (10)
+
+    time.sleep (3)
 
     files = glob.glob(DUMP_DIR+'*.csv')
     for file in files:
+        file_name = os.path.basename(file)
+        file_name_array = file_name.split("_")
+        last_item = file_name_array[-1]
         df = pd.read_csv(file)
         row_count = df.shape[0]
-        print(row_count)
-        if row_count == ROW_COUNT:
-            processed_data = hex2dec_ble.process_file(file)
-            processed_data.to_csv(file, index=False)
-            move_processed_file(os.path.basename(file))
+        if last_item == "DHT.csv":
+            logging.info("Watching the directory: %s for dht11 sensor  csv file having 2 rows in it" % DUMP_DIR)
+            if row_count == DHT_ROW_COUNT:
+                move_processed_file(os.path.basename(file))
+        else:
+            logging.info("Watching the directory: %s for csv file having 15000 rows in it" % DUMP_DIR)
+            if row_count == ROW_COUNT:
+                processed_data = hex2dec_ble.process_file(file)
+                processed_data.to_csv(file, index=False)
+                move_processed_file(os.path.basename(file))
 
