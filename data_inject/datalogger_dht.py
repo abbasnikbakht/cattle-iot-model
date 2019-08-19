@@ -349,12 +349,12 @@ def main():
     start_new_file()
     while (True):
         humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
-        temp = "{:0.1f}*C".format(temperature)
-        hum = "{:0.1f}%".format(humidity)
+        temp = "{:0.1f}".format(temperature)
+        hum = "{:0.1f}".format(humidity)
         tnow = time.strftime("%a %b %d %Y %H:%M:%S")
-        results = tnow + "," + str(temp) + "," + str(hum) + "/n"
+        results = tnow + "," + str(temp) + "," + str(hum) + "\n"
         read_data()
-        time.sleep(600) # 10 minutes sampling period
+        time.sleep(6) # 10 minutes sampling period
  
 ############################################################################
 

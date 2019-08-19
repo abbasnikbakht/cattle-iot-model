@@ -46,8 +46,8 @@ def convert_dht11_csv_to_json_list(file):
 
             data['Index'] = row['Index']
             data['Timestamp'] = row[' Timestamp']
-            data['Temperature *C'] = row[' Temperature *C']
-            data['Humidity % '] = row[' Humidity % ']
+            data['Temperature'] = row[' Temperature']
+            data['Humidity'] = row[' Humidity ']
             items.append(data)
         return items
 
