@@ -17,7 +17,7 @@ from logging.config import dictConfig
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOG_FILE_PATH = os.path.join(BASE_DIR, 'logs/data_inject.log')
 INPUT_DIR = '/home/pi/datalogger/input_data/'
-PROCESSED_FILES_FOLDER = '/media/pi/USBDRIVE/'
+PROCESSED_FILES_FOLDER = '/home/pi/datalogger/processed_data'
 DUMP_DIR = '/home/pi/datalogger/csv_dump/'
 DYNAMO_DB = 'TestProd'
 ROW_COUNT = 14999
