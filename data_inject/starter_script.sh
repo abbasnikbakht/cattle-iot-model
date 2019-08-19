@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 source /home/pi/datalogger/catenv/bin/activate
-processes=( "python monitor.py" "python file_processor.py")
+processes=( "python monitor.py" "python file_processor.py" "python datalogger.py")
 
 start() {
 
