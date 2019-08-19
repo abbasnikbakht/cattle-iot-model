@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-processes=( "python monitor.py" "python file_processor.py" "python datalogger.py")
+processes=( "python monitor.py" "python file_processor.py" "/usr/bin/python datalogger.py")
 
 start() {
     source /home/pi/datalogger/catenv/bin/activate
@@ -9,8 +9,12 @@ start() {
     echo running the scripts
     for i in "${processes[@]}"
         do
+           echo $i
            if pgrep -f "$i" &>/dev/null; then
                 echo "$i already running. please stop it first"
+           elif "$i"=="/usr/bin/python datalogger.py"; then
+                echo $i
+                $i &
            else
                 $i &
         fi
@@ -18,13 +22,6 @@ start() {
 
 }
 
-start_data_logger(){
-    if pgrep -f "python datalogger.py" &>/dev/null; then
-        echo "datalogger already running. please stop it first"
-   else
-        python datalogger.py &
-    fi
-}
 
 stop() {
 
@@ -45,10 +42,6 @@ stop() {
 case "$1" in
     'start')
             start
-            ;;
-
-    'start_datalogger')
-            start_data_logger
             ;;
 
     'stop')
