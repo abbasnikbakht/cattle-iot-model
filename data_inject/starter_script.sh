@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-source /home/pi/datalogger/catenv/bin/activate
+
 processes=( "python monitor.py" "python file_processor.py" "python datalogger.py")
 
 start() {
-
+    source /home/pi/datalogger/catenv/bin/activate
     echo virtualenv is now active.
     echo running the scripts
     for i in "${processes[@]}"
@@ -16,6 +16,14 @@ start() {
         fi
         done
 
+}
+
+start_data_logger(){
+    if pgrep -f "python datalogger.py" &>/dev/null; then
+        echo "datalogger already running. please stop it first"
+   else
+        python datalogger.py &
+    fi
 }
 
 stop() {
@@ -38,6 +46,11 @@ case "$1" in
     'start')
             start
             ;;
+
+    'start_datalogger')
+            start_data_logger
+            ;;
+
     'stop')
             stop
             ;;
@@ -47,7 +60,7 @@ case "$1" in
             ;;
     *)
             echo
-            echo "Usage: $0 { start | stop | restart | status }"
+            echo "Usage: $0 { start | start_datalogger | stop | restart  }"
             echo
             exit 1
             ;;
