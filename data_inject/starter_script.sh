@@ -12,12 +12,10 @@ start() {
            echo $i
            if pgrep -f "$i" &>/dev/null; then
                 echo "$i already running. please stop it first"
-           elif "$i"=="/usr/bin/python datalogger.py"; then
-                echo $i
+
+            else
                 $i &
-           else
-                $i &
-        fi
+            fi
         done
 
 }
