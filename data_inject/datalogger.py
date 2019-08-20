@@ -261,14 +261,17 @@ def read_data():
 
     # after a full valueString has been assembled, create the timestamp
     valueString = binascii.hexlify(valueString).decode('utf-8')
-    millis = int(round(time.time() * 1000))
-    rightNow = str(datetime.datetime.now()).split()
-    mDate = rightNow[0]
-    mTime = rightNow[1]
+    if len(valueString) == 18:
+        millis = int(round(time.time() * 1000))
+        rightNow = str(datetime.datetime.now()).split()
+        mDate = rightNow[0]
+        mTime = rightNow[1]
 
     # format the full string: index, timestamp, and data
 
-    fileString = str(format('%05d', dataIndex)) + ", " + str(mDate) + ", " + str(mTime) + ", " + valueString
+        fileString = str(format('%05d', dataIndex)) + ", " + str(mDate) + ", " + str(mTime) + ", " + valueString
+    else:
+        fileString = ""
 
    
 
@@ -282,13 +285,14 @@ def read_data():
         # before writing, double-check that the data logging file exists
 
         if (os.path.exists(FilePath)):
-            print(fileString)
-            fileString += "\r\n"
-            mFile = open(FilePath, "a", 1)
-            mFile.write(fileString)
-            mFile.close()
-            dataIndex += 1
-            validate_usb_write()
+            if fileString!="":
+                print(fileString)
+                fileString += "\r\n"
+                mFile = open(FilePath, "a", 1)
+                mFile.write(fileString)
+                mFile.close()
+                dataIndex += 1
+                validate_usb_write()
 
         # if the file doesn't exist, but the drive path still exsists, then it
         # is possible that the file was deleted while in use.
