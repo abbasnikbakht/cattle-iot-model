@@ -13,6 +13,7 @@
 import time
 
 import readcsv
+import publish
 from settings.default import *
 
 path_to_watch = INPUT_DIR
@@ -26,5 +27,5 @@ while 1:
     removed = [f for f in before if not f in after]
     if added:
         print("Added: ", ", ".join (added))
-        readcsv.main(added)
+        publish.main(added)
     before = after
