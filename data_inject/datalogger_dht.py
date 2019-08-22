@@ -354,7 +354,7 @@ def main():
         tnow = time.strftime("%a %b %d %Y %H:%M:%S")
         results = tnow + "," + str(temp) + "," + str(hum) + "\n"
         read_data()
-        time.sleep(6) # 10 minutes sampling period
+        time.sleep(60) # 1 minutes sampling period
  
 ############################################################################
 
