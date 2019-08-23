@@ -54,7 +54,7 @@ FAIL_PATH = "/media/pi/USBDRIVE1/"
 DRIVE_PATH = "/home/pi/datalogger/csv_dump/"
 AUTH_PATH = DRIVE_PATH + "validate.txt"
 
-MAX_ROWS_IN_FILE = 3
+MAX_ROWS_IN_FILE = 13
 
 
 """############################################################################
@@ -220,7 +220,7 @@ def start_new_file():
         # data formatting, and want to make this program specific, add your
         # data headers here.
 
-        mFile.write("Index, Timestamp, Temperature, Humidity \r\n")
+        mFile.write("Index, Timestamp, Temperature in *C, Humidity % \r\n")
         mFile.close()
         PathValid = True
         dataIndex = 1
@@ -348,13 +348,23 @@ def main():
 
     start_new_file()
     while (True):
-        humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
-        temp = "{:0.1f}".format(temperature)
-        hum = "{:0.1f}".format(humidity)
-        tnow = time.strftime("%a %b %d %Y %H:%M:%S")
-        results = tnow + "," + str(temp) + "," + str(hum) + "\n"
-        read_data()
-        time.sleep(60) # 1 minutes sampling period
+        h, t = Adafruit_DHT.read_retry(sensor, pin)
+        if(h is not "None" and t is not 'None'):
+            temp = "{:0.1f}".format(t)
+            hum = "{:0.1f}%".format(h)
+            tnow = time.strftime("%a %b %d %Y %H:%M:%S")
+            results = tnow + "," + str(temp) + "," + str(hum) + "\n"
+            read_data()
+        else:
+            print "no input found"
+        time.sleep(300) # 5 minutes sampling period
+            
+        
+        
+        
+        
+        
+        
  
 ############################################################################
 
