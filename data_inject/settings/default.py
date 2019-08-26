@@ -18,11 +18,31 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOG_FILE_PATH = os.path.join(BASE_DIR, 'logs/data_inject.log')
 INPUT_DIR = '/home/pi/datalogger/input_data/'
 PROCESSED_FILES_FOLDER = '/home/pi/datalogger/processed_data/'
-DUMP_DIR = '/home/pi/datalogger/csv_dump/'
+PUB_DUMP_DIR = '/home/pi/datalogger/csv_dump_pub/'
+SENT_DIR = '/home/pi/datalogger/mqtt_sent_dir/'
+SUB_DUMP_DIR = '/home/pi/datalogger/csv_dump_sub/'
+
+MQTT_BROCKER = "localhost"
+MQTT_PORT = 1883
+
+TOPIC = "cattle_iot"
+
 DYNAMO_DB = 'TestProd'
 DYNAMO_DB_DHT11 = 'CattleIOT_DHT11'
-ROW_COUNT = 14999
+ROW_COUNT = 14998
 DHT_ROW_COUNT = 2
+
+INFLUX_DB_HOST = "localhost"
+INFLUX_DB_PORT = 8086
+INFLUX_DB_USER = "root"
+INFLUX_DB_PASSWORD = "root"
+INFLUX_DB_NAME = "SENSOR_DATA"
+INFLUX_DB_DHT_TABLE = 'acc_sensor_data_temp'
+INFLUX_DB_ACC_TABLE = 'dht_sensor_data_temp'
+
+
+
+
 # Log size in MB
 LOG_SIZE = 5
 # Log file back up count

@@ -1,3 +1,4 @@
+import logging
 import shutil
 
 import paho.mqtt.client as paho #mqtt library
@@ -7,11 +8,10 @@ import time
 from datetime import datetime
 from settings.default import *
 
-
-broker="mqtt.eclipse.org" #host name , Replace with your IP address.
-topic="test"
-port=1883 #MQTT data listening port
-client1= paho.Client("control1") #create client object
+broker=MQTT_BROCKER #host name , Replace with your IP address.
+topic=TOPIC
+port=MQTT_PORT #MQTT data listening port
+client1= paho.Client("cattle_iot") #create client object
 
 def on_publish(client,userdata,result): #create function for callback
     """
@@ -32,25 +32,22 @@ def move_processed_file(file):
     :return:
     """
     logging.info("moving the processed file: %s" % file)
-    shutil.move(INPUT_DIR+file, PROCESSED_FILES_FOLDER+file)
+    file_name = os.path.basename(file)
+    shutil.move(PUB_DUMP_DIR+file, SENT_DIR+file_name)
 
 
-def main(file_list):
+def main(file):
     """
     Function which is used to publish the csv data to the topic
     :return:
     """
     client1.on_publish = on_publish  # assign function to callback
     client1.connect(broker, port, keepalive=60)  # establishing connection
-    for file in file_list:
-        file_path = INPUT_DIR + file
-        f = open(file_path)
-        imagestring = f.read()
-        print(imagestring)
-        byteArray = bytes(imagestring, encoding='utf8')
-        print(byteArray)
-        client1.publish(topic, byteArray, 0)
-        move_processed_file(file)
+    f = open(PUB_DUMP_DIR+file)
+    file_content = f.read()
+    byteArray = bytes(file_content, encoding='utf8')
+    client1.publish(topic, byteArray, 0)
+    move_processed_file(file)
 
 
 

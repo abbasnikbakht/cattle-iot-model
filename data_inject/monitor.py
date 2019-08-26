@@ -9,23 +9,94 @@
     :copyright: (c) YEAR by AUTHOR.
     :license: LICENSE_NAME, see LICENSE_FILE for more details.
 """
-
+import glob
+import logging
+import os
+import random
+import shutil
 import time
+from random import randint
 
-import readcsv
-import publish
+import pandas as pd
+# import readcsv
+# import publish
 from settings.default import *
+import influxdb
 
-path_to_watch = INPUT_DIR
+from influxdb import InfluxDBClient
 
-before = dict ([(f, None) for f in os.listdir (path_to_watch)])
+dbClient = InfluxDBClient(INFLUX_DB_HOST, INFLUX_DB_PORT, INFLUX_DB_USER, INFLUX_DB_PASSWORD, INFLUX_DB_NAME)
+batch_count = 10000
+influx_pd = influxdb.DataFrameClient(INFLUX_DB_HOST, INFLUX_DB_PORT, INFLUX_DB_USER, INFLUX_DB_PASSWORD, INFLUX_DB_NAME, verify_ssl=False)
+
+
+
+from data_inject import hex2dec_ble
+# from data_inject.subscribe import influx_pd
+
+path_to_watch = SUB_DUMP_DIR
+
+
+def move_processed_file(file, type):
+    """
+    Function to move the processed file to processed folder
+    :param file:
+    :return:
+    """
+    logging.info("moving the processed file: %s" % file)
+    file_name_array = file.split(".")
+    file_name = file_name_array[0]
+    file_name = file_name+"_"+type+".csv"
+    shutil.move(SUB_DUMP_DIR+file, PROCESSED_FILES_FOLDER+file_name)
+
+
+def random_with_N_digits(n):
+    range_start = 10**(n-1)
+    range_end = (10**n)-1
+    return randint(range_start, range_end)
+
+
+def splitDataFrameIntoSmaller(df, chunkSize = 10000):
+    listOfDf = list()
+    numberChunks = len(df) // chunkSize + 1
+    for i in range(numberChunks):
+        listOfDf.append(df[i*chunkSize:(i+1)*chunkSize])
+    return listOfDf
+
+
 while 1:
-    logging.info("Watching the directory: %s for new csv file" % path_to_watch)
-    time.sleep (3)
-    after = dict ([(f, None) for f in os.listdir (path_to_watch)])
-    added = [f for f in after if not f in before]
-    removed = [f for f in before if not f in after]
-    if added:
-        print("Added: ", ", ".join (added))
-        publish.main(added)
-    before = after
+    time.sleep (1)
+    print("hellow")
+    files = glob.glob(SUB_DUMP_DIR+'*.csv')
+    print(files)
+    for file in files:
+        file_name = os.path.basename(file)
+        file_name_array = file_name.split("_")
+        last_item = file_name_array[-1]
+        df = pd.read_csv(file)
+        row_count = df.shape[0]
+        if row_count == DHT_ROW_COUNT:
+
+            logging.info("Watching the directory: %s for dht11 sensor  csv file having 2 rows in it" % SUB_DUMP_DIR)
+            type = "DHT"
+            df = pd.read_csv(file)
+            df['Index'] = [random.randint(1, 10000000) for k in df.index]
+            for frame in splitDataFrameIntoSmaller(df):
+                frame.set_index(pd.DatetimeIndex(frame['Index']), inplace=True)
+                influx_pd.write_points(frame, measurement="dht_sensor_data_temp")
+
+            move_processed_file(os.path.basename(file), type)
+
+        elif row_count == ROW_COUNT:
+            type = "ACC"
+            logging.info("Watching the directory: %s for csv file having 15000 rows in it" % SUB_DUMP_DIR)
+            processed_data = hex2dec_ble.process_file(file)
+            processed_data.to_csv(file, index=False)
+            df = pd.read_csv(file)
+            df['Index'] = [random.randint(1,10000000) for k in df.index]
+            for frame in splitDataFrameIntoSmaller(df):
+                frame.set_index(pd.DatetimeIndex(frame['Index']), inplace=True)
+                influx_pd.write_points(frame, measurement='acc_sensor_data_temp')
+            move_processed_file(os.path.basename(file),type)
+
+
