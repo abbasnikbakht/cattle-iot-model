@@ -1,9 +1,6 @@
 pandas
 flask
-sklearn
 boto3
-pah
 influxdb
-paho-mqtt
 kafka
 kafka-python

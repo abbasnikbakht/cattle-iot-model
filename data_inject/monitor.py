@@ -20,6 +20,7 @@ from random import randint
 from settings.default import *
 from influxdb import InfluxDBClient
 
+from data_inject import hex2dec_ble
 
 dbClient = InfluxDBClient(INFLUX_DB_HOST, INFLUX_DB_PORT, INFLUX_DB_USER, INFLUX_DB_PASSWORD, INFLUX_DB_NAME)
 batch_count = 10000
