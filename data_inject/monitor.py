@@ -71,7 +71,7 @@ while 1:
             df['time'] = df[' Timestamp'].apply(pd.to_datetime)
             df = df.set_index('time')
             for frame in splitDataFrameIntoSmaller(df):
-                influx_pd.write_points(frame, measurement="dht_sensor_data_final_tbl_test")
+                influx_pd.write_points(frame, measurement="dht_sensor_data_final_tbl")
             move_processed_file(os.path.basename(file), type)
 
         elif row_count == ROW_COUNT:
@@ -84,7 +84,7 @@ while 1:
             df['time'] = df['time'].apply(pd.to_datetime)
             df = df.set_index('time')
             for frame in splitDataFrameIntoSmaller(df):
-                influx_pd.write_points(frame, measurement='acc_sensor_data_final_tbl_test')
+                influx_pd.write_points(frame, measurement='acc_sensor_data_final_tbl')
             move_processed_file(os.path.basename(file),type)
 
 
