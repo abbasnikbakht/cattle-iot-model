@@ -12,29 +12,18 @@
 import glob
 import logging
 import os
-import random
 import shutil
 import time
-from random import randint
-
 import pandas as pd
-# import readcsv
-# import publish
-from settings.default import *
 import influxdb
-
+from random import randint
+from settings.default import *
 from influxdb import InfluxDBClient
+
 
 dbClient = InfluxDBClient(INFLUX_DB_HOST, INFLUX_DB_PORT, INFLUX_DB_USER, INFLUX_DB_PASSWORD, INFLUX_DB_NAME)
 batch_count = 10000
 influx_pd = influxdb.DataFrameClient(INFLUX_DB_HOST, INFLUX_DB_PORT, INFLUX_DB_USER, INFLUX_DB_PASSWORD, INFLUX_DB_NAME, verify_ssl=False)
-
-
-
-from data_inject import hex2dec_ble
-# from data_inject.subscribe import influx_pd
-
-path_to_watch = SUB_DUMP_DIR
 
 
 def move_processed_file(file, type):
@@ -65,26 +54,24 @@ def splitDataFrameIntoSmaller(df, chunkSize = 10000):
 
 
 while 1:
-    time.sleep (1)
-    print("hellow")
+    time.sleep(1)
     files = glob.glob(SUB_DUMP_DIR+'*.csv')
-    print(files)
     for file in files:
         file_name = os.path.basename(file)
         file_name_array = file_name.split("_")
         last_item = file_name_array[-1]
         df = pd.read_csv(file)
         row_count = df.shape[0]
+        print(row_count)
         if row_count == DHT_ROW_COUNT:
 
             logging.info("Watching the directory: %s for dht11 sensor  csv file having 2 rows in it" % SUB_DUMP_DIR)
             type = "DHT"
             df = pd.read_csv(file)
-            df['Index'] = [random.randint(1, 10000000) for k in df.index]
+            df['time'] = df[' Timestamp'].apply(pd.to_datetime)
+            df = df.set_index('time')
             for frame in splitDataFrameIntoSmaller(df):
-                frame.set_index(pd.DatetimeIndex(frame['Index']), inplace=True)
-                influx_pd.write_points(frame, measurement="dht_sensor_data_temp")
-
+                influx_pd.write_points(frame, measurement="dht_sensor_data_final_tbl_test")
             move_processed_file(os.path.basename(file), type)
 
         elif row_count == ROW_COUNT:
@@ -93,10 +80,11 @@ while 1:
             processed_data = hex2dec_ble.process_file(file)
             processed_data.to_csv(file, index=False)
             df = pd.read_csv(file)
-            df['Index'] = [random.randint(1,10000000) for k in df.index]
+            df["time"] = df["Date"] + df["Time"]
+            df['time'] = df['time'].apply(pd.to_datetime)
+            df = df.set_index('time')
             for frame in splitDataFrameIntoSmaller(df):
-                frame.set_index(pd.DatetimeIndex(frame['Index']), inplace=True)
-                influx_pd.write_points(frame, measurement='acc_sensor_data_temp')
+                influx_pd.write_points(frame, measurement='acc_sensor_data_final_tbl_test')
             move_processed_file(os.path.basename(file),type)
 
 

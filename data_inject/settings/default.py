@@ -22,15 +22,13 @@ PUB_DUMP_DIR = '/home/pi/datalogger/csv_dump_pub/'
 SENT_DIR = '/home/pi/datalogger/mqtt_sent_dir/'
 SUB_DUMP_DIR = '/home/pi/datalogger/csv_dump_sub/'
 
-MQTT_BROCKER = "localhost"
-MQTT_PORT = 1883
 
+KAFKA_URL = "52.220.41.10:9092"
+KAFKA_PORT = 9092
 TOPIC = "cattle_iot"
 
-DYNAMO_DB = 'TestProd'
-DYNAMO_DB_DHT11 = 'CattleIOT_DHT11'
-ROW_COUNT = 14998
-DHT_ROW_COUNT = 2
+ROW_COUNT = 639
+DHT_ROW_COUNT = 12
 
 INFLUX_DB_HOST = "localhost"
 INFLUX_DB_PORT = 8086
@@ -39,8 +37,6 @@ INFLUX_DB_PASSWORD = "root"
 INFLUX_DB_NAME = "SENSOR_DATA"
 INFLUX_DB_DHT_TABLE = 'acc_sensor_data_temp'
 INFLUX_DB_ACC_TABLE = 'dht_sensor_data_temp'
-
-
 
 
 # Log size in MB

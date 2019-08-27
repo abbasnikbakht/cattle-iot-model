@@ -1,17 +1,20 @@
 import logging
 import shutil
+import sys
 
 import paho.mqtt.client as paho #mqtt library
 import os
 import json
 import time
 from datetime import datetime
+from kafka import KafkaProducer
+from json import dumps
 from settings.default import *
 
-broker=MQTT_BROCKER #host name , Replace with your IP address.
-topic=TOPIC
-port=MQTT_PORT #MQTT data listening port
-client1= paho.Client("cattle_iot") #create client object
+producer = KafkaProducer(bootstrap_servers=[KAFKA_URL],
+                             value_serializer=lambda x:
+                             dumps(x).encode('utf-8'))
+
 
 def on_publish(client,userdata,result): #create function for callback
     """
@@ -41,13 +44,12 @@ def main(file):
     Function which is used to publish the csv data to the topic
     :return:
     """
-    client1.on_publish = on_publish  # assign function to callback
-    client1.connect(broker, port, keepalive=60)  # establishing connection
+
+    logging.info("Connecting to Brocker")
     f = open(PUB_DUMP_DIR+file)
-    file_content = f.read()
-    byteArray = bytes(file_content, encoding='utf8')
-    client1.publish(topic, byteArray, 0)
+    imagestring = f.read()
+    logging.info("Publishing message to the topic %s" % TOPIC)
+    producer.send(TOPIC, value=imagestring)
+    time.sleep(10)
     move_processed_file(file)
-
-
 

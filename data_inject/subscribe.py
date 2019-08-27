@@ -1,18 +1,19 @@
 import datetime
 import json
-import random
 import shutil
 from random import randint
 
-import influxdb
-import paho.mqtt.client as paho
-from influxdb import InfluxDBClient
-import pandas as pd
+from kafka import KafkaConsumer
 from settings.default import *
 
-broker=MQTT_BROCKER #host name , Replace with your IP address.
-topic = TOPIC # topic name
-port=MQTT_PORT #MQTT data listening port
+
+consumer = KafkaConsumer(
+    TOPIC,
+    bootstrap_servers=[KAFKA_URL],
+    auto_offset_reset='earliest',
+    enable_auto_commit=True,
+    group_id='my-group',
+    value_deserializer=lambda x: json.loads(x.decode('utf-8')))
 
 
 def move_processed_file(file):
@@ -38,34 +39,22 @@ def splitDataFrameIntoSmaller(df, chunkSize = 10000):
     return listOfDf
 
 
-def on_message(client, userdata, message):
+def on_message(message):
     FileName = str("_".join(str(datetime.datetime.now()).split(" ")))
     FileName = str("_".join(FileName.split(":")))
     FileName = str("_".join(FileName.split(".")))
     FileName = str("_".join(FileName.split("-")))
     FileName = FileName + ".csv"
-    print(message.payload)
+
+    message_str = message.value
+    byteArray = bytes(message_str, encoding='utf8')
+
     with open(SUB_DUMP_DIR+FileName, 'wb') as fd:
-        fd.write(message.payload)
+        fd.write(byteArray)
 
-    # df = pd.read_csv(FileName)
-    # print(df.head())
-    # df['Index'] = [random.randint(1,10000000) for k in df.index]
-    # for frame in splitDataFrameIntoSmaller(df):
-    #     frame.set_index(pd.DatetimeIndex(frame['Index']), inplace=True)
-    #     influx_pd.write_points(frame, measurement='acc_sensor_data_test_final')
-
-    # move_processed_file(FileName)
-
-
-
-client = paho.Client("cattle_iot_sub")  # create client object
-client.on_message = on_message
-
-print("connecting to broker host", broker)
-client.connect(broker, port, keepalive=60)  # establishing connection
-print("subscribing begins here")
-client.subscribe(topic)  # subscribe topic test
 
 while 1:
-    client.loop_start()  # contineously checking for message
+    logging.info("Consuming the message published from the topic %s" % TOPIC)
+    for message in consumer:
+        on_message(message)
+
