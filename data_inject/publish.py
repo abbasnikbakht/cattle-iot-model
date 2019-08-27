@@ -49,7 +49,7 @@ def main(file):
     f = open(PUB_DUMP_DIR+file)
     imagestring = f.read()
     logging.info("Publishing message to the topic %s" % TOPIC)
-    producer.send(TOPIC, value=imagestring)
+    producer.send("TOPIC", value=imagestring)
     time.sleep(10)
     move_processed_file(file)
 
