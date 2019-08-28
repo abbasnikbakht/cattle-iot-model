@@ -39,7 +39,7 @@ def move_processed_file(file, type):
     file_name = file_name+"_"+type+".csv"
     shutil.move(SUB_DUMP_DIR+file, PROCESSED_FILES_FOLDER+file_name)
 
-def move_failed_file(file, type):
+def move_failed_file(file):
     """
     Function to move the failed file to failed folder
     :param file:
@@ -48,7 +48,7 @@ def move_failed_file(file, type):
     logging.info("moving the failed file: %s" % file)
     file_name_array = file.split(".")
     file_name = file_name_array[0]
-    file_name = file_name + "_" + type + ".csv"
+    file_name = file_name + "_" + ".csv"
     shutil.move(SUB_DUMP_DIR + file, FAILED_FILES_FOLDER + file_name)
 
 
@@ -103,5 +103,5 @@ while 1:
         except Exception as e:
             logging.info(e)
             logging.info("Mooving the failed file to %s" % FAILED_FILES_FOLDER)
-            move_failed_file(os.path.basename(file), type)
+            move_failed_file(os.path.basename(file))
 

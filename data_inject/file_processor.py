@@ -49,4 +49,4 @@ while 1:
             if row_count == ROW_COUNT:
                 publish.main(file_name)
                 print("publish")
-    # before = after
+    before = after

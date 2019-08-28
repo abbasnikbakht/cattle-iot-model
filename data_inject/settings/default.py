@@ -27,7 +27,7 @@ SUB_DUMP_DIR = '/home/pi/datalogger/csv_dump_sub/'
 
 KAFKA_URL = "52.220.41.10:9092"
 KAFKA_PORT = 9092
-TOPIC = "cattle_iot"
+TOPIC = "cattle_iot_stream"
 
 ROW_COUNT = 639
 DHT_ROW_COUNT = 12
