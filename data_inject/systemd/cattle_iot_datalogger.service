@@ -1,0 +1,14 @@
+[Unit]
+Description=Cattle iot datalogger service
+After=multi-user.target
+
+[Service]
+User=pi
+Type=simple
+ExecStart=/home/pi/dataloggercattle-iot-model/catenv/bin/python /home/pi/datalogger/datalogger.py
+StandardInput=tty-force
+Restart=on-failure
+
+[Install]
+WantedBy=cattle_iot_fileprocessor.service
+

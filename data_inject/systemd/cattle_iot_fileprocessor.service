@@ -1,0 +1,13 @@
+[Unit]
+Description=Cattle iot fileprocessor service
+After=multi-user.target
+
+[Service]
+User=pi
+Type=simple
+ExecStart=/home/pi/datalogger/catenv/bin/python /home/pi/datalogger/cattle-iot-model/data_inject/file_processor.py
+StandardInput=tty-force
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
