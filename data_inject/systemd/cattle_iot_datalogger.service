@@ -5,7 +5,7 @@ After=multi-user.target
 [Service]
 User=pi
 Type=simple
-ExecStart=/home/pi/dataloggercattle-iot-model/catenv/bin/python /home/pi/datalogger/datalogger.py
+ExecStart=/home/pi/datalogger/catenv/bin/python /home/pi/datalogger/datalogger.py
 StandardInput=tty-force
 Restart=on-failure
 
