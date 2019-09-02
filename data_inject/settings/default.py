@@ -43,7 +43,7 @@ INFLUX_DB_ACC_TABLE = 'dht_sensor_data_temp'
 DARK_SKY_API_URL = "https://api.darksky.net/forecast/"
 LOCATION = "10.138955,76.483265"
 SECRET_KEY = "453df98caa61e588e057985b19ed0d90"
-
+UNIT = 'si'
 # Log size in MB
 LOG_SIZE = 5
 # Log file back up count
