@@ -40,11 +40,11 @@ class RequestDarkSkyApi(object):
             json_body = [
                 {
                     "measurement": "dark_sky_api_data",
-                    "time": response_data['time'],
+                    "time": int(str(response_data['time'])+'000000000'),
                     "fields": {
-                        "THI": float(THI),
-                        "humidity": float(humidity),
-                        "temperature": float(response_data['temperature']),
+                        "THI": THI,
+                        "humidity": humidity,
+                        "temperature": response_data['temperature'],
 
                     }
                 }
@@ -63,6 +63,8 @@ while 1:
     data = obj.update_influx_db()
     if data:
         logging.info("Inserting data into influx db")
+        logging.info(data)
         dbClient.write_points(data)
+        logging.info("inserted data")
     else:
         logging.info("No data recieved")

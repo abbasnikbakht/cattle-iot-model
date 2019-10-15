@@ -88,7 +88,7 @@ while 1:
                     influx_pd.write_points(frame, measurement="dht_sensor_data_final_tbl")
                 move_processed_file(os.path.basename(file), type)
 
-            elif row_count == ROW_COUNT:
+            elif row_count >= ROW_COUNT:
                 type = "ACC"
                 logging.info("Watching the directory: %s for csv file having 15000 rows in it" % SUB_DUMP_DIR)
                 processed_data = hex2dec_ble.process_file(file)
@@ -98,7 +98,7 @@ while 1:
                 df['time'] = df['time'].apply(pd.to_datetime)
                 df = df.set_index('time')
                 for frame in splitDataFrameIntoSmaller(df):
-                    influx_pd.write_points(frame, measurement='acc_sensor_data_final_tbl')
+                    influx_pd.write_points(frame, measurement='acc_sensor_data_final_tbl_27')
                 move_processed_file(os.path.basename(file),type)
         except Exception as e:
             logging.info(e)
