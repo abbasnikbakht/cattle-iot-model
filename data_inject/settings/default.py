@@ -16,13 +16,13 @@ from logging.config import dictConfig
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOG_FILE_PATH = os.path.join(BASE_DIR, 'logs/data_inject.log')
-INPUT_DIR = '/home/pi/datalogger/input_data/'
-PROCESSED_FILES_FOLDER = '/home/pi/datalogger/processed_data/'
-FAILED_FILES_FOLDER = '/home/pi/datalogger/failed_data/'
+INPUT_DIR = '/home/iti/datalogger/input_data/'
+PROCESSED_FILES_FOLDER = '/home/iti/datalogger/processed_data/'
+FAILED_FILES_FOLDER = '/home/iti/datalogger/failed_data/'
 
-PUB_DUMP_DIR = '/home/pi/datalogger/csv_dump/'
-SENT_DIR = '/home/pi/datalogger/mqtt_sent_dir/'
-SUB_DUMP_DIR = '/home/pi/datalogger/csv_dump_sub/'
+PUB_DUMP_DIR = '/home/iti/datalogger/csv_dump/'
+SENT_DIR = '/home/iti/datalogger/mqtt_sent_dir/'
+SUB_DUMP_DIR = '/home/iti/datalogger/csv_dump_sub/'
 
 
 KAFKA_URL = "52.220.41.10:9092"
