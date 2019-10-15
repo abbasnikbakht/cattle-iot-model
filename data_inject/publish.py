@@ -2,7 +2,6 @@ import logging
 import shutil
 import sys
 
-import paho.mqtt.client as paho #mqtt library
 import os
 import json
 import time
