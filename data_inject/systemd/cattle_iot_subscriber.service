@@ -3,9 +3,9 @@ Description=Cattle iot subscriber service
 After=multi-user.target
 
 [Service]
-User=seqato-lijo
+User=iti
 Type=simple
-ExecStart=/home/seqato-lijo/workspace/cattle-iot-model/catenv/bin/python /home/seqato-lijo/workspace/cattle-iot-model/data_inject/subscribe.py
+ExecStart=/home/iti/cattle-model/catenv/bin/python /home/iti/cattle-model/cattle-iot-model/data_inject/subscribe.py
 StandardInput=tty-force
 Restart=on-failure
 
