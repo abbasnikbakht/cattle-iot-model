@@ -19,7 +19,7 @@ import influxdb
 from random import randint
 from settings.default import *
 from influxdb import InfluxDBClient
-
+import datetime
 import hex2dec_ble
 
 dbClient = InfluxDBClient(INFLUX_DB_HOST, INFLUX_DB_PORT, INFLUX_DB_USER, INFLUX_DB_PASSWORD, INFLUX_DB_NAME)
@@ -97,8 +97,15 @@ while 1:
                 df["time"] = df["Date"] + df["Time"]
                 df['time'] = df['time'].apply(pd.to_datetime)
                 df = df.set_index('time')
+                date = datetime.datetime.now()
+                datestr = str(date)
+                date_list = datestr.split(" ")
+                date_list = date_list[0].split("-")
+                final_date = date_list[0] + "_" + date_list[1] + "_" + date_list[2]
+                measurement_name = 'acc_sensor_data_final_tbl_' + final_date
+
                 for frame in splitDataFrameIntoSmaller(df):
-                    influx_pd.write_points(frame, measurement='acc_sensor_data_final_tbl_27')
+                    influx_pd.write_points(frame, measurement=measurement_name)
                 move_processed_file(os.path.basename(file),type)
         except Exception as e:
             logging.info(e)
